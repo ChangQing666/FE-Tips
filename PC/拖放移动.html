@@ -1,0 +1,100 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<!-- jquery -->
+<script type="text/javascript" src="jquery-2.1.4.js"></script>
+
+<title>height&width</title>
+<style type="text/css">
+html,body{
+width:100%;
+height:100%;
+margin:0;
+padding:0;
+background: url("images/bg.png") repeat;
+}
+
+#box{
+	position:absolute;
+	left:20%;
+	top:20%;
+	padding : 80px 120px;
+	border : 2px solid #F8F2FD;
+	height : 50px;
+	line-height : 50px;
+	text-align : center;
+	border-radius:5px;
+	background:#F48E3F;
+	box-shadow: 2px 2px 2px #BCBCBC;
+	color: white;
+}
+#box2{
+	position:absolute;
+	left:30%;
+	top:40%;
+	padding : 80px 120px;
+	border : 2px solid #F8F2FD;
+	height : 50px;
+	line-height : 50px;
+	text-align : center;
+	border-radius:5px;
+	background:#F48E3F;
+	box-shadow: 2px 2px 2px #BCBCBC;
+	color: white;
+}
+</style>
+</head>
+<body>
+	<div id="box">
+		这是盒子模型
+	</div>
+  <!-- <img  id="box" src="https://www.baidu.com/img/baidu_jgylogo3.gif" alt=""> -->
+	<script type="text/javascript">
+			drag("#box");
+			function drag(selector){
+				var box = $(selector);
+				box.on("mousedown",function(event){
+					box.ox = event.clientX;
+					box.oy = event.clientY;
+					//绑定文档的移动事件
+					document.onmousemove = onMouseMove;
+					//绑定文档的鼠标收起事件
+					document.onmouseup = onMouseUp;
+					//阻止页面的选择动作，非常重要，当拖拽发生时，如果存在文本选择，会影响拖拽效果
+					document.onselectstart = function () { return false; }
+				});
+
+				function onMouseMove(event){
+					var cx = event.clientX,
+						cy = event.clientY,
+						ox = box.ox,
+						oy = box.oy;
+
+					var diffX = ox - cx,
+						diffY = oy - cy;
+
+					var left = box.offset().left,
+						top = box.offset().top;
+
+					box.css({
+						left : left - diffX + "px",
+						top : top - diffY + "px"
+					});
+					//计算完毕后，将新的坐标值写给缓存值
+					box.ox = cx;
+					box.oy = cy;
+				}
+
+				//销毁绑定在document上的事件
+				function onMouseUp(event){
+					document.onmousemove = null;
+					document.onmouseup = null;
+					//开启允许选择标记位
+					document.onselectstart = null;
+				}
+			}
+	</script>
+</body>
+</html>
